@@ -15,39 +15,13 @@ Jeweler::Tasks.new do |gem|
   gem.name = "silverstripe-deploy"
   gem.homepage = "http://github.com/timsnadden/silverstripe-deploy"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Silverstripe specific deployment recipes"
+  gem.description = "Silverstripe specific deployment recipes"
   gem.email = "tim@snadden.com"
   gem.authors = ["timsnadden"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
-end
-Jeweler::RubygemsDotOrgTasks.new
-
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-task :default => :test
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "silverstripe-deploy #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+  gem.add_runtime_dependency 'capistrano', '>= 2.4'
+  gem.add_runtime_dependency 'railsless-deploy', '>= 1.0.2'
+  gem.add_development_dependency 'jeweler', '> 1.2.3'
 end
