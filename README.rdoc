@@ -1,6 +1,6 @@
 = silverstripe-deploy
 
-Description goes here.
+Capistrano recipe for deploying Silverstripe sites. 
 
 == Contributing to silverstripe-deploy
  
