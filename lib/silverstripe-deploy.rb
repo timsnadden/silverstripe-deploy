@@ -6,7 +6,6 @@ Capistrano::Configuration.instance(:must_exist).load do
   ############################################################################
   _cset(:application) { abort "Please specify the name of your application, e.g. set :app_name, 'dna.co.nz'" }
   _cset(:deploy_to)   { abort "Please specify the deployment path, e.g. set :deploy_to, '/srv/www'" }
-  _cset(:db_name)     { abort "Please specify the database name, e.g. set :db_name, 'dna'" }
   _cset(:repository)  { abort "Please specify the repository URL. e.g. set :repository,  'http://svn.dna.co.nz/dna/internal/open/trunk'"  }
     
   ############################################################################
@@ -25,12 +24,25 @@ Capistrano::Configuration.instance(:must_exist).load do
   _cset(:deploy_via)        { :remote_cache }  
   default_run_options[:pty] = true  
   
+  
   ############################################################################
   # These variables are set via user input
   ############################################################################
-  set(:user) { Capistrano::CLI.ui.ask("Enter server username: ") }  
-  set(:db_password) { Capistrano::CLI.ui.ask("Enter mysql password: ") }
+  _cset(:user) { Capistrano::CLI.ui.ask("Enter server username: ") }  
+  _cset(:db_password) { Capistrano::CLI.ui.ask("Enter mysql password: ") }
 
+  ############################################################################
+  # These variables are set by inspecting silverstripe config
+  ############################################################################  
+  _cset(:db_name) { 
+    configstring = capture "grep '^$database' #{current_path}/mysite/_config.php"
+    if configstring =~ /['"](.*)['"]/
+      $1
+    else
+      abort "Couldn't get :db_name from mysite/_config.php"
+    end
+  }
+  
   ############################################################################
   # Recipes
   ############################################################################
