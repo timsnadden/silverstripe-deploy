@@ -42,6 +42,14 @@ Capistrano::Configuration.instance(:must_exist).load do
       abort "Couldn't get :db_name from mysite/_config.php"
     end
   }
+
+  ############################################################################
+  # Utility Functions
+  ############################################################################
+  
+  def remote_file_exists?(full_path)
+    'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+  end
   
   ############################################################################
   # Recipes
@@ -56,13 +64,17 @@ Capistrano::Configuration.instance(:must_exist).load do
         symlink_assets
         symlink
       end
-    end
-  
+    end  
     task :symlink_assets do
       run "ln -nsf #{shared_path}/assets #{latest_release}/assets"
     end
     task :remove_dev_files do
-      run "rm #{latest_release}/_ss_environment.php #{latest_release}/capfile"
+      if remote_file_exists?("#{latest_release}/_ss_environment.php")
+        run "rm #{latest_release}/_ss_environment.php"
+      end
+      if remote_file_exists?("#{latest_release}/capfile")
+        run "rm #{latest_release}/capfile"
+      end
     end
     task :file_2_url do
       run "#{sudo :as => "apache"} echo \"\<\?php \\$_FILE_TO_URL_MAPPING\[\'#{latest_release}\'\] = \'http://#{application}/\'\;\" > #{deploy_to}/file2url.php"
