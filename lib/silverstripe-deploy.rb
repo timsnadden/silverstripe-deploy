@@ -12,15 +12,13 @@ Capistrano::Configuration.instance(:must_exist).load do
   # These variables may be set in the client capfile if their default values
   # are not sufficient.
   ############################################################################
-  _cset(:runner)            { "apache" }
+  _cset(:apache_user)       { "apache" }
+  _cset(:apache_group)      { "apache" }
   _cset(:keep_releases)     { 3 }
   _cset(:db_backup_dir)     { "#{deploy_to}/db-backup" }
   _cset(:local_db_user)     { 'root' }
   _cset(:local_db_password) { 'root' }
-  _cset(:db_backup_dir)     { "#{deploy_to}/db-backup" }
-  _cset(:local_db_user)     { 'root' }
-  _cset(:local_db_password) { 'root' }
-  _cset(:tmp_dir) { '/tmp' }
+  _cset(:tmp_dir)           { '/tmp' }
   _cset(:deploy_via)        { :remote_cache }  
   default_run_options[:pty] = true  
   
@@ -77,12 +75,12 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
     task :file_2_url do
-      run "#{sudo :as => "apache"} echo \"\<\?php \\$_FILE_TO_URL_MAPPING\[\'#{latest_release}\'\] = \'http://#{application}/\'\;\" > #{deploy_to}/file2url.php"
+      run "echo \"\<\?php \\$_FILE_TO_URL_MAPPING\[\'#{latest_release}\'\] = \'http://#{application}/\'\;\" > #{deploy_to}/file2url.php"
     end
     task :fix_cache do
-      set :cache_name, latest_release.gsub( "/", "-" )
-      sudo "cp #{tmp_dir}/silverstripe-cache#{cache_name}/manifest-cli-script #{tmp_dir}/silverstripe-cache#{cache_name}/manifest-main"
-      sudo "chown -R apache:apache #{tmp_dir}/silverstripe-cache#{cache_name}"
+      set :cache_name, latest_release.gsub( "/", "-" )    
+      run "#{sudo} cp #{tmp_dir}/silverstripe-cache#{cache_name}/manifest-cli-script #{tmp_dir}/silverstripe-cache#{cache_name}/manifest-main"      
+      run "#{sudo} chown -R #{apache_user}:#{apache_group} #{tmp_dir}/silverstripe-cache#{cache_name}"
     end
     task :rebuild_hometemplate do
       run "cd #{latest_release}; sake / flush=all"

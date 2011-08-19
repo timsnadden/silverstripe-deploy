@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{silverstripe-deploy}
-  s.version = "0.0.2"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["timsnadden"]
-  s.date = %q{2011-05-03}
+  s.authors = [%q{timsnadden}]
+  s.date = %q{2011-08-19}
   s.description = %q{Silverstripe specific deployment recipes}
   s.email = %q{tim@snadden.com}
   s.extra_rdoc_files = [
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
@@ -30,9 +29,9 @@ Gem::Specification.new do |s|
     "test/test_silverstripe-deploy.rb"
   ]
   s.homepage = %q{http://github.com/timsnadden/silverstripe-deploy}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.0}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.8}
   s.summary = %q{Silverstripe specific deployment recipes}
   s.test_files = [
     "test/helper.rb",
